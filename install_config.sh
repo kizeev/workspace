@@ -3,7 +3,7 @@
 # install work tools
 sudo pamac install google-chrome postman-bin
 sudo pacman -S bitwarden neovim tmux obsidian gcc xclip tree ctags fd ripgrep \
-    postgresql alacritty flameshot docker nodejs npm --noconfirm
+    postgresql alacritty flameshot docker nodejs npm dbeaver --noconfirm
 
 
 # git config
