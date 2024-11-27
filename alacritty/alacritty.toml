@@ -1,4 +1,4 @@
-[shell]
+[terminal.shell]
 program = "/bin/zsh"
 args = ["-l"]
 
@@ -6,7 +6,10 @@ args = ["-l"]
 opacity = 0.92
 
 [font]
-size = 13
+size = 12
 
 [font.normal]
 family = "MesloLGS NF"
+
+[general]
+import = ["~/.config/alacritty/themes/themes/gruvbox_dark.toml"]
