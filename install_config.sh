@@ -3,7 +3,18 @@
 # install work tools
 sudo pacman -S zsh bitwarden neovim tmux obsidian gcc xclip tree ctags fd \
    ripgrep postgresql alacritty flameshot docker nodejs npm dbeaver \
-   base-devel git wireguard-tools net-tools zip unzip --noconfirm --needed
+   base-devel git wireguard-tools net-tools zip unzip pipx pyright \
+   --noconfirm --needed
+
+
+# pipx config
+pipx ensurepath
+sudo pipx ensurepath --global # optional to allow pipx actions with --global argument
+pipx completions
+
+
+# install extra tools from AUR
+pipx install ranger-fm
 
 
 # install AUR
@@ -12,7 +23,7 @@ cd yay
 makepkg -si
 
 
-# install extra tools
+# install extra tools from AUR
 yay -S google-chrome postman-bin slack-desktop
 
 
