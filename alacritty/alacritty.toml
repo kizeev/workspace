@@ -1,6 +1,6 @@
 [terminal.shell]
 program = "/bin/zsh"
-args = ["-l"]
+args = ["-l", "-c", "tmux"]
 
 [window]
 opacity = 0.92
