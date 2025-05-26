@@ -5,9 +5,9 @@ git clone https://github.com/kizeev/workspace.git
 ```
 2. make install script executable
 ```bash
-chmod +x install_config.sh
+chmod +x ~/workspace/install_config.sh
 ```
 3.run the script
 ```bash
-./install_config.sh
+~/workspace/install_config.sh
 ```
