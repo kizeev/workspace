@@ -3,7 +3,7 @@
 # install work tools
 sudo pacman -S zsh bitwarden neovim tmux obsidian gcc xclip tree ctags fd \
    ripgrep postgresql alacritty flameshot docker nodejs npm dbeaver \
-   base-devel git wireguard-tools net-tools zip unzip pipx pyright \
+   base-devel git wireguard-tools net-tools zip unzip python-pipx pyright \
    --noconfirm --needed
 
 
@@ -73,3 +73,10 @@ cp ~/.tmux/.tmux.conf.local ~/
 
 # config wireguard
 sudo modprobe wireguard
+
+
+# config docker
+sudo systemctl enable docker
+sudo systemctl start docker
+sudo docker run -d --hostname rabbitmq --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.13-management
+sudo docker run -p 6379:6379 --name redis -d redis
