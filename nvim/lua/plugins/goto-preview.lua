@@ -19,4 +19,5 @@ require('goto-preview').setup{
   stack_floating_preview_windows = true, -- Whether to nest floating windows
   preview_window_title = { enable = true, position = "left" }, -- Whether to set the preview window title as the filename
   zindex = 1, -- Starting zindex for the stack of floating windows
+  vim_ui_input = true,  -- Whether to override vim.ui.input with our custom implementation
 }
