@@ -4,7 +4,7 @@
 sudo pacman -S zsh bitwarden neovim tmux obsidian gcc xclip tree ctags fd \
    ripgrep postgresql alacritty flameshot docker nodejs npm dbeaver \
    base-devel git wireguard-tools net-tools zip unzip python-pipx pyright \
-   --noconfirm --needed
+   lazygit --noconfirm --needed
 
 
 # pipx config
