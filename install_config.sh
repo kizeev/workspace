@@ -80,3 +80,8 @@ sudo systemctl enable docker
 sudo systemctl start docker
 sudo docker run -d --hostname rabbitmq --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.13-management
 sudo docker run -p 6379:6379 --name redis -d redis
+
+
+# config ranger-fm
+mkdir -p ~/.config/ranger
+cp ~/workspace/ranger/rifle.conf ~/.config/ranger/
