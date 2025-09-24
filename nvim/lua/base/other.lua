@@ -51,3 +51,8 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- optionally enable 24-bit colour
 vim.opt.termguicolors = true
+
+-- Enable folding
+vim.opt.foldenable = true
+vim.opt.foldmethod = 'indent'  -- or 'syntax', 'marker', 'expr'
+vim.opt.foldlevel = 99  -- Open all folds by default
