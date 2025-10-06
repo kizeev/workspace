@@ -24,7 +24,8 @@ makepkg -si
 
 
 # install extra tools from AUR
-yay -S google-chrome postman-bin slack-desktop visual-studio-code-bin
+yay -S google-chrome postman-bin slack-desktop visual-studio-code-bin \
+    another-redis-desktop-manager-bin
 
 
 # set zsh as default
