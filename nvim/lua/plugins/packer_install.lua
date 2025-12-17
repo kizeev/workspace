@@ -45,4 +45,12 @@ return require('packer').startup(function()
     use 'L3MON4D3/LuaSnip' -- плагин для сниппетов, рекомендуется для использования с nvim-cmp
     use 'saadparwaiz1/cmp_luasnip' -- источник автодополнения для LuaSnip
     -- end
+
+    use {
+        "kdheepak/lazygit.nvim",
+        requires = {
+            "nvim-lua/plenary.nvim",
+        },
+    }
+
 end)
