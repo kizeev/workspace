@@ -8,6 +8,9 @@ vim.opt.splitbelow = true
 
 
 --[[ Дополнительные настройки ]]--
+-- Сохранять историю отмен между сессиями
+vim.opt.undofile = true
+
 -- Используем системный буфер обмена
 vim.opt.clipboard = 'unnamedplus'
 
