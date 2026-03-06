@@ -86,3 +86,9 @@ sudo docker run -p 6379:6379 --name redis -d redis
 # config ranger-fm
 mkdir -p ~/.config/ranger
 cp ~/workspace/ranger/rifle.conf ~/.config/ranger/
+
+
+# config postgres
+sudo -u postgres initdb --locale=C.UTF-8 --encoding=UTF8 -D '/var/lib/postgres/data'
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
