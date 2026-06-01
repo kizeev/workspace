@@ -18,3 +18,9 @@ map('n', '<Leader>fl', ':call flake8#Flake8()<CR>', opts)
 
 -- namu (explorer)
 map('n', '<Leader>tt', ':Namu ctags<CR>', opts)
+
+-- claudecode
+map('n', '<Leader>co', ':ClaudeCode<CR>', opts)
+map('n', '<Leader>cs', ':ClaudeCodeSend<CR>', opts)
+map('n', '<Leader>ca', ':ClaudeCodeAdd %<CR>', opts)
+map('n', '<Leader>ct', ':ClaudeCodeTreeAdd<CR>', opts)
