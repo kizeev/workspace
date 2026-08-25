@@ -16,37 +16,30 @@ local M = {
             },
         })
 
-        -- Treesitter directory
-        local treesitter_dir = vim.fn.stdpath("data") .. "/lazy/nvim-treesitter/"
-
-        -- Collect all available parsers
-        local parsers = {}
-        for name, type in vim.fs.dir(treesitter_dir .. "runtime/queries") do
-            if type == "directory" then
-                table.insert(parsers, name)
-            end
-        end
-
-        -- Install file type parsers
-        require("nvim-treesitter").install(parsers)
-
-        -- Register known file types
-        dofile(treesitter_dir .. "plugin/filetypes.lua")
-
-        -- Get file types
-        local file_types = vim.iter(parsers)
-            :map(function(parser)
-                return vim.treesitter.language.get_filetypes(parser)
-            end)
-            :flatten()
-            :totable()
-
-        -- Auto-run
+        -- Install a parser on first use rather than all ~300 supported
+        -- languages on every startup (the previous approach: this plugin
+        -- bundles queries for every language it supports, so walking its
+        -- own runtime/queries directory and installing all of them ran a
+        -- full ensure-installed pass over ~300 parsers on every launch)
         vim.api.nvim_create_autocmd("FileType", {
-            pattern = file_types,
             callback = function(args)
-                -- Highlights
-                vim.treesitter.start()
+                local lang = vim.treesitter.language.get_lang(args.match) or args.match
+                if not vim.tbl_contains(require("nvim-treesitter").get_available(), lang) then
+                    return
+                end
+                if vim.tbl_contains(require("nvim-treesitter").get_installed(), lang) then
+                    vim.treesitter.start(args.buf, lang)
+                else
+                    -- :wait() blocks the event loop, which errors when called
+                    -- from inside a FileType autocmd (fires under textlock);
+                    -- :await() installs without blocking and starts
+                    -- highlighting once the parser is actually ready
+                    require("nvim-treesitter").install(lang):await(function(err)
+                        if not err and vim.api.nvim_buf_is_valid(args.buf) then
+                            vim.treesitter.start(args.buf, lang)
+                        end
+                    end)
+                end
             end,
         })
     end,
