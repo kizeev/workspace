@@ -1,10 +1,16 @@
 #!/bin/bash
+set -euo pipefail
 
 # install work tools
-sudo pacman -S zsh bitwarden neovim tmux obsidian gcc xclip tree ctags fd \
+# assumes CachyOS (for the cachyos-zsh-config package/repo — see .zshrc);
+# on plain Arch, drop cachyos-zsh-config and configure zsh/p10k yourself
+# (pyright and ctags dropped: pyright is installed by nvim's mason.nvim,
+# ctags was only used by namu.nvim, which is no longer in the nvim config)
+sudo pacman -S zsh bitwarden neovim tmux obsidian gcc xclip tree fd \
    ripgrep postgresql alacritty flameshot docker nodejs npm dbeaver \
-   base-devel git wireguard-tools net-tools zip unzip python-pipx pyright \
-   lazygit uv github-cli docker-compose --noconfirm --needed
+   base-devel git wireguard-tools net-tools zip unzip python-pipx \
+   lazygit uv github-cli docker-compose cachyos-zsh-config \
+   --noconfirm --needed
 
 
 # pipx config
@@ -18,9 +24,12 @@ pipx install ranger-fm
 
 
 # install AUR
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
+if ! command -v yay &>/dev/null; then
+    git clone https://aur.archlinux.org/yay.git
+    cd yay
+    makepkg -si --noconfirm
+    cd ..
+fi
 
 
 # install extra tools from AUR
@@ -33,23 +42,31 @@ chsh -s /bin/zsh
 
 
 # install fonts
-mkdir -p "~/.local/share/fonts"
-find "workspace/fonts" \( -name "*.ttf" -o -name "*.otf" -o -name "*.ttc" \) -type f -print0 | \
-    xargs -0 -I {} cp "{}" "~/.local/share/fonts/"
+mkdir -p ~/.local/share/fonts
+find ~/workspace/fonts \( -name "*.ttf" -o -name "*.otf" -o -name "*.ttc" \) -type f -print0 | \
+    xargs -0 -I {} cp "{}" ~/.local/share/fonts/
 
 # alacritty config
-mv ~/.config/alacritty/alacritty.toml \
-    ~/.config/alacritty/alacritty_default.toml
+if [ -f ~/.config/alacritty/alacritty.toml ]; then
+    mv ~/.config/alacritty/alacritty.toml \
+        ~/.config/alacritty/alacritty_default.toml
+fi
 cp -r ~/workspace/alacritty ~/.config
 mkdir -p ~/.config/alacritty/themes
-git clone https://github.com/alacritty/alacritty-theme \
-    ~/.config/alacritty/themes
+if [ ! -d ~/.config/alacritty/themes/.git ]; then
+    git clone https://github.com/alacritty/alacritty-theme \
+        ~/.config/alacritty/themes
+fi
 cp ~/workspace/.p10k.zsh ~/
+
+# zsh config
+cp ~/workspace/.zshrc ~/
 
 
 # git config
-read -p "Enter your Github access token: " git_token
-echo "https://kizeev:$git_token@github.com" >> ~/.git-credentials
+read -s -p "Enter your Github access token: " git_token
+echo
+echo "https://kizeev:$git_token@github.com" > ~/.git-credentials
 
 cat << EOF > ~/.gitconfig
 [user]
@@ -60,16 +77,17 @@ cat << EOF > ~/.gitconfig
 EOF
 
 
-# nvim config
+# nvim config (lazy.nvim bootstraps itself on first launch, no separate clone needed)
+rm -rf ~/.config/nvim
 cp -r ~/workspace/nvim ~/.config
-git clone --depth 1 https://github.com/wbthomason/packer.nvim \
-    ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 
 
 # tmux config
-git clone https://github.com/gpakosz/.tmux.git ~/.tmux
+if [ ! -d ~/.tmux ]; then
+    git clone https://github.com/gpakosz/.tmux.git ~/.tmux
+fi
 ln -sf ~/.tmux/.tmux.conf ~/
-cp ~/.tmux/.tmux.conf.local ~/
+cp ~/workspace/tmux/.tmux.conf.local ~/
 
 
 # config wireguard

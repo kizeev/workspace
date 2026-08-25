@@ -5,7 +5,7 @@ local opts = {noremap = true, silent = true}
 vim.g.mapleader = ','
 
 -- отключить подсветку результата поиска
-map('n', '<Leader><Space>', ':nohlsearch<CR>', opts)
+map('n', '<Leader><Space>', ':nohlsearch<CR>', vim.tbl_extend('force', opts, { desc = 'Clear search highlight' }))
 
 -- установить "jk" как <Esc> во всех режимах
 map('i', 'jk', '<Esc>', opts)
