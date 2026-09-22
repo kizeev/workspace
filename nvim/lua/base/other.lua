@@ -59,3 +59,11 @@ vim.opt.termguicolors = true
 vim.opt.foldenable = true
 vim.opt.foldmethod = 'indent'  -- or 'syntax', 'marker', 'expr'
 vim.opt.foldlevel = 99  -- Open all folds by default
+
+-- Перечитывать файл с диска, если он изменился вне буфера (например, правки от другого инструмента)
+vim.opt.autoread = true
+
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+  pattern = "*",
+  command = "checktime",
+})
