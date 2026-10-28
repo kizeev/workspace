@@ -57,8 +57,11 @@ vim.opt.termguicolors = true
 
 -- Enable folding
 vim.opt.foldenable = true
-vim.opt.foldmethod = 'indent'  -- or 'syntax', 'marker', 'expr'
-vim.opt.foldlevel = 99  -- Open all folds by default
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.opt.foldlevel = 99
+
+vim.opt.foldtext = ''
 
 -- Перечитывать файл с диска, если он изменился вне буфера (например, правки от другого инструмента)
 vim.opt.autoread = true
