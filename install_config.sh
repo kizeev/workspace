@@ -10,6 +10,7 @@ sudo pacman -S zsh bitwarden neovim tmux obsidian gcc xclip tree fd \
    ripgrep postgresql alacritty flameshot docker nodejs npm dbeaver \
    base-devel git wireguard-tools net-tools zip unzip python-pipx \
    lazygit uv github-cli docker-compose cachyos-zsh-config \
+   vifm bat \
    --noconfirm --needed
 
 
@@ -19,8 +20,6 @@ sudo pipx ensurepath --global # optional to allow pipx actions with --global arg
 pipx completions
 
 
-# install extra tools from AUR
-pipx install ranger-fm
 
 
 # install AUR
@@ -101,9 +100,15 @@ sudo docker run -d --hostname rabbitmq --name rabbitmq -p 5672:5672 -p 15672:156
 sudo docker run -p 6379:6379 --name redis -d redis
 
 
-# config ranger-fm
-mkdir -p ~/.config/ranger
-cp ~/workspace/ranger/rifle.conf ~/.config/ranger/
+# config vifm
+mkdir -p ~/.config/vifm/colors
+cp ~/workspace/vifm/vifmrc ~/.config/vifm/
+cp ~/workspace/vifm/colors/gruvbox.vifm ~/.config/vifm/colors/
+
+
+# config bat
+mkdir -p ~/.config/bat
+cp ~/workspace/bat/config ~/.config/bat/
 
 
 # config postgres
