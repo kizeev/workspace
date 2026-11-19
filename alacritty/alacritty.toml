@@ -3,7 +3,7 @@ program = "/bin/zsh"
 args = ["-l", "-c", "tmux new-session -A -s main"]
 
 [window]
-opacity = 0.92
+opacity = 0.97
 startup_mode = "Maximized"
 
 [font]
@@ -14,3 +14,8 @@ family = "MesloLGS NF"
 
 [general]
 import = ["~/.config/alacritty/themes/themes/gruvbox_dark.toml"]
+
+# Darker "bright black" so Claude Code's dark-ansi panels (diff view,
+# highlighted messages) don't wash out text. Gruvbox default: '#928374'.
+[colors.bright]
+black = '#32302f'
