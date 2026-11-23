@@ -138,7 +138,8 @@ endif
 set grepprg="grep -n -H -I -r -s %i %a %s"
 
 " List of color schemes to try (picks the first one supported by the terminal)
-colorscheme juef-zenburn
+" gruvbox: exact gruvbox.nvim colors on a *-direct $TERM (see colors/gruvbox.vifm)
+colorscheme gruvbox juef-zenburn
 
 " ------------------------------------------------------------------------------
 " Bookmarks

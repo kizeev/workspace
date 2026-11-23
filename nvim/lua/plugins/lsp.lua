@@ -65,7 +65,33 @@ return {
             return { buffer = args.buf, remap = false, desc = desc }
           end
 
-          vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts("Goto definition"))
+          -- Always jump to the FIRST definition in the current window instead
+          -- of opening a quickfix list at the bottom when the LSP returns
+          -- several locations. Replicates Neovim's native single-result path
+          -- (jumplist mark + tagstack push) so <C-t> still returns here.
+          local function goto_definition()
+            local win = vim.api.nvim_get_current_win()
+            local from = { vim.fn.bufnr("%"), vim.fn.line("."), vim.fn.col("."), 0 }
+            local tagname = vim.fn.expand("<cword>")
+            vim.lsp.buf.definition({
+              on_list = function(res)
+                local item = res.items[1]
+                if not item then return end
+                local b = item.bufnr or vim.fn.bufadd(item.filename)
+
+                vim.cmd("normal! m'") -- save position in jumplist
+                vim.fn.settagstack(win, { items = { { tagname = tagname, from = from } } }, "t")
+
+                vim.bo[b].buflisted = true
+                vim.api.nvim_win_set_buf(win, b)
+                vim.api.nvim_win_set_cursor(win, { item.lnum, item.col - 1 })
+                vim.api.nvim_win_call(win, function()
+                  vim.cmd("normal! zv") -- open folds under the cursor
+                end)
+              end,
+            })
+          end
+          vim.keymap.set("n", "gd", goto_definition, opts("Goto definition"))
           vim.keymap.set("n", "K", vim.lsp.buf.hover, opts("Hover"))
           vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, opts("Workspace symbol"))
           vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, opts("Line diagnostics"))

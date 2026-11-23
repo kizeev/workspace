@@ -21,6 +21,9 @@ return {
                 local cwd = vim.fn.expand("%:p:h")
                 if cwd == "" or vim.fn.isdirectory(cwd) == 0 then cwd = vim.fn.getcwd() end
                 vim.fn.termopen("vifm --choose-files " .. tmpfile .. " " .. vim.fn.shellescape(cwd), {
+                    -- *-direct terminfo makes vifm use the exact 24-bit gruvbox
+                    -- colors from its colorscheme (nvim's terminal handles them)
+                    env = { TERM = "xterm-direct" },
                     on_exit = function()
                         vim.api.nvim_buf_delete(buf, { force = true })
                         if vim.fn.filereadable(tmpfile) == 1 then

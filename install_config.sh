@@ -45,21 +45,16 @@ mkdir -p ~/.local/share/fonts
 find ~/workspace/fonts \( -name "*.ttf" -o -name "*.otf" -o -name "*.ttc" \) -type f -print0 | \
     xargs -0 -I {} cp "{}" ~/.local/share/fonts/
 
-# alacritty config
-if [ -f ~/.config/alacritty/alacritty.toml ]; then
-    mv ~/.config/alacritty/alacritty.toml \
-        ~/.config/alacritty/alacritty_default.toml
-fi
-cp -r ~/workspace/alacritty ~/.config
+# configs: symlinked into place, so a later `git pull` in ~/workspace is all
+# it takes to update them (nvim, zsh/p10k, tmux, alacritty, vifm, bat)
+~/workspace/link.sh
+
+# alacritty themes (imported by alacritty.toml)
 mkdir -p ~/.config/alacritty/themes
 if [ ! -d ~/.config/alacritty/themes/.git ]; then
     git clone https://github.com/alacritty/alacritty-theme \
         ~/.config/alacritty/themes
 fi
-cp ~/workspace/.p10k.zsh ~/
-
-# zsh config
-cp ~/workspace/.zshrc ~/
 
 
 # git config
@@ -76,17 +71,11 @@ cat << EOF > ~/.gitconfig
 EOF
 
 
-# nvim config (lazy.nvim bootstraps itself on first launch, no separate clone needed)
-rm -rf ~/.config/nvim
-cp -r ~/workspace/nvim ~/.config
-
-
-# tmux config
+# tmux base config (our .tmux.conf.local is linked by link.sh)
 if [ ! -d ~/.tmux ]; then
     git clone https://github.com/gpakosz/.tmux.git ~/.tmux
 fi
 ln -sf ~/.tmux/.tmux.conf ~/
-cp ~/workspace/tmux/.tmux.conf.local ~/
 
 
 # config wireguard
@@ -98,17 +87,6 @@ sudo systemctl enable docker
 sudo systemctl start docker
 sudo docker run -d --hostname rabbitmq --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.13-management
 sudo docker run -p 6379:6379 --name redis -d redis
-
-
-# config vifm
-mkdir -p ~/.config/vifm/colors
-cp ~/workspace/vifm/vifmrc ~/.config/vifm/
-cp ~/workspace/vifm/colors/gruvbox.vifm ~/.config/vifm/colors/
-
-
-# config bat
-mkdir -p ~/.config/bat
-cp ~/workspace/bat/config ~/.config/bat/
 
 
 # config postgres
