@@ -40,10 +40,13 @@ yay -S google-chrome postman-bin slack-desktop visual-studio-code-bin \
 chsh -s /bin/zsh
 
 
-# install fonts
+# install fonts: MesloLGS NF, required by the p10k prompt
+# (Apache 2.0, https://github.com/romkatv/powerlevel10k-media)
 mkdir -p ~/.local/share/fonts
-find ~/workspace/fonts \( -name "*.ttf" -o -name "*.otf" -o -name "*.ttc" \) -type f -print0 | \
-    xargs -0 -I {} cp "{}" ~/.local/share/fonts/
+for style in Regular Bold Italic "Bold Italic"; do
+    curl -fsSL -o ~/.local/share/fonts/"MesloLGS NF $style.ttf" \
+        "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20${style// /%20}.ttf"
+done
 
 # configs: symlinked into place, so a later `git pull` in ~/workspace is all
 # it takes to update them (nvim, zsh/p10k, tmux, alacritty, vifm, bat)
@@ -57,18 +60,17 @@ if [ ! -d ~/.config/alacritty/themes/.git ]; then
 fi
 
 
-# git config
-read -s -p "Enter your Github access token: " git_token
-echo
-echo "https://kizeev:$git_token@github.com" > ~/.git-credentials
+# git config: identity is asked for rather than hardcoded; for a public repo
+# use the GitHub noreply address (Settings -> Emails) to keep yours private
+read -r -p "git user.name: " git_name
+read -r -p "git user.email: " git_email
+git config --global user.name "$git_name"
+git config --global user.email "$git_email"
 
-cat << EOF > ~/.gitconfig
-[user]
-   name = kizeev
-   email = 81430969+kizeev@users.noreply.github.com
-[credential]
-   helper = store
-EOF
+# GitHub auth via gh: the token goes to the system keyring (when available)
+# instead of a plaintext ~/.git-credentials, and git uses gh as its helper
+gh auth login --hostname github.com --git-protocol https --web
+gh auth setup-git
 
 
 # tmux base config (our .tmux.conf.local is linked by link.sh)

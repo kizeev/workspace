@@ -1,11 +1,9 @@
---[[ Поиск ]]--
--- Игнорировать регистр при поиске
--- Если теперь введем "IGNORE", то он найдет и "ignore"
+--[[ Search ]]--
+-- Case-insensitive search: "ignore" also finds "IGNORE"
 vim.opt.ignorecase = true
 
--- Не игнорировать регистр, если есть символы в верхнем регистре
--- Если напишем "Ignore", то он будет искать только "Ignore"
+-- ...unless the pattern has uppercase letters: "Ignore" finds only "Ignore"
 vim.opt.smartcase = true
 
--- Подсвечивать найденные текстовые объекты
+-- Briefly jump to the matching bracket when one is inserted
 vim.opt.showmatch = true

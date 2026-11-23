@@ -12,9 +12,9 @@ yourself).
 - `.zshrc`, `.p10k.zsh` — shell + prompt config
 - `vifm/` — file manager config (also opened from nvim with `<leader>e`)
 - `bat/config` — bat theme
-- `fonts/` — MesloLGS NF (required by the p10k prompt)
 - `link.sh` — symlinks all of the above into place (see *Keeping machines in sync*)
-- `install_config.sh` — installs packages, runs `link.sh`, sets up services
+- `install_config.sh` — installs packages and fonts (MesloLGS NF, required by
+  the p10k prompt), runs `link.sh`, sets up git/GitHub auth and services
 
 ## Usage
 
@@ -25,8 +25,8 @@ chmod +x ~/workspace/install_config.sh
 ```
 
 **Before running:** this is meant for a genuinely fresh install. It runs
-`sudo pacman -S`, installs `yay` and several AUR packages, overwrites
-`~/.gitconfig`, replaces existing configs with symlinks (backed up as
+`sudo pacman -S`, installs `yay` and several AUR packages, sets the global
+git identity, replaces existing configs with symlinks (backed up as
 `*.bak`), starts
 Docker containers (redis, rabbitmq) and initializes a fresh PostgreSQL data
 directory. Read through it before running on a machine that already has

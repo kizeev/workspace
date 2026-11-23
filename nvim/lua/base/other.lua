@@ -1,50 +1,50 @@
---[[ Настройка панелей ]]--
--- Вертикальные сплиты становятся справа
--- По умолчанию панели в Neovim ставятся в зависимости от расположения текущей панели. Данная настройка поможет нам держать панели в порядке
+--[[ Splits ]]--
+-- Vertical splits open to the right (by default the position depends on the
+-- current window, this keeps the layout predictable)
 vim.opt.splitright = true
 
--- Горизонтальные сплиты становятся снизу
+-- Horizontal splits open below
 vim.opt.splitbelow = true
 
 
---[[ Дополнительные настройки ]]--
--- Сохранять историю отмен между сессиями
+--[[ Misc ]]--
+-- Keep undo history between sessions
 vim.opt.undofile = true
 
--- Используем системный буфер обмена
+-- Use the system clipboard
 vim.opt.clipboard = 'unnamedplus'
 
--- Отключаем дополнение файлов в конце
+-- Don't add a missing newline at the end of the file
 vim.opt.fixeol = false
 
--- Автодополнение (встроенное в Neovim)
+-- Built-in completion menu behavior
 vim.opt.completeopt = 'menuone,noselect'
 
--- Не автокомментировать новые линии при переходе на новую строку
+-- Don't continue comments automatically on new lines
 vim.cmd("autocmd BufEnter * set fo-=c fo-=r fo-=o")
 
--- показать номер строки
+-- Line numbers
 vim.opt.number = true 
 
--- показать относительные номера строк
+-- Relative line numbers
 vim.opt.relativenumber = true 
 
--- включить мышь
+-- Enable the mouse
 vim.opt.mouse = "a"
 
--- не создавать swap файл при открытии
+-- No swap files
 vim.opt.swapfile = false 
 
--- кодировка
+-- Encoding
 vim.opt.encoding = "utf-8" 
 
--- прокручивать на 7 строк до низа экрана
+-- Keep 7 lines visible above/below the cursor
 vim.opt.scrolloff = 7 
 
--- история в 1000 строк
+-- Command-line history of 1000 entries
 vim.opt.history = 1000 
 
--- показать границу строки в файлах python в 79 символов
+-- Show a 79-column ruler in Python files
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "python",
   callback = function()
@@ -52,7 +52,7 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- optionally enable 24-bit colour
+-- 24-bit color
 vim.opt.termguicolors = true
 
 -- Enable folding
@@ -63,7 +63,7 @@ vim.opt.foldlevel = 99
 
 vim.opt.foldtext = ''
 
--- Перечитывать файл с диска, если он изменился вне буфера (например, правки от другого инструмента)
+-- Reload the file from disk if it changed outside nvim (e.g. edits by another tool)
 vim.opt.autoread = true
 
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {

@@ -1,16 +1,16 @@
---[[ Настройка табов ]]--
+--[[ Indentation ]]--
 
--- Включает умные отступы, которые автоматически добавляют дополнительные отступы в новых строках, основываясь на синтаксисе языка программирования.
+-- Auto-indent new lines based on the syntax of the language
 vim.opt.smartindent = true
 
--- Устанавливает ширину табуляции равной 4 пробелам. Это значит, что при нажатии клавиши Tab будет вставлено 4 пробела.
+-- A tab is displayed as 4 columns
 vim.opt.tabstop = 4
 
--- Определяет количество пробелов, используемых для отступа при использовании операций отступа и выравнивания, таких как >>, <<, ==.
+-- Indent width for >>, << and == (and for smartindent)
 vim.opt.shiftwidth = 4
 
--- Улучшает работу с табуляцией и отступами при редактировании текста. При нажатии Tab в начале строки используется shiftwidth для определения размера отступа, а в остальных случаях — tabstop.
+-- <Tab> at the start of a line indents by shiftwidth, elsewhere by tabstop
 vim.opt.smarttab = true
 
--- Преобразует табуляцию в пробелы. Это означает, что при нажатии Tab будет вставлено количество пробелов, указанное в tabstop, вместо символа табуляции.
+-- Insert spaces instead of tab characters
 vim.opt.expandtab = true
