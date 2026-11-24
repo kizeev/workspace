@@ -40,12 +40,17 @@ if [[ -d $_dotfiles_dir/.git ]]; then
     local -a msg counts
     [[ -n $(git -C $dir status --porcelain 2>/dev/null) ]] && msg+=("uncommitted changes")
     counts=(${=$(git -C $dir rev-list --left-right --count HEAD...@{u} 2>/dev/null)})
-    (( ${counts[1]:-0} )) && msg+=("$counts[1] to push")
-    (( ${counts[2]:-0} )) && msg+=("$counts[2] to pull")
+    local ahead=${counts[1]:-0} behind=${counts[2]:-0}
+    # ${${n:#1}:+s}: plural "s" unless n is 1
+    (( ahead ))  && msg+=("$ahead commit${${ahead:#1}:+s} not pushed")
+    (( behind )) && msg+=("$behind new commit${${behind:#1}:+s} on remote")
 
     if (( $#msg )); then
+      local repo=${(D)dir} hint=status  # (D): /home/me/x -> ~/x
+      (( behind && ! ahead )) && [[ $msg[1] != uncommitted* ]] && hint=pull
       zle -I  # print above the prompt, then let zle redraw it
-      print -P "%F{yellow}dotfiles:%f ${(j:, :)msg}  %F{8}($dir)%f"
+      # no %F{8} here: bright black is darkened to near-background in alacritty
+      print -rP -- "%F{yellow}dotfiles repo $repo:%f ${(j:, :)msg} %F{yellow}->%f git -C $repo $hint"
     fi
   }
   autoload -Uz add-zle-hook-widget

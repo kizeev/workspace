@@ -1,6 +1,14 @@
 [terminal.shell]
 program = "/bin/zsh"
-args = ["-l", "-c", "tmux new-session -A -s main"]
+# First window: attach to (or create) the "main" session, so closing alacritty
+# doesn't lose it. If "main" is already shown in another window, open a fresh
+# session instead of mirroring it; that one is destroyed when its window closes.
+args = ["-l", "-c", '''
+if tmux ls -F '#{session_name}:#{session_attached}' 2>/dev/null | grep -q '^main:[1-9]'; then
+  exec tmux new-session -s "win-$$" ';' set-option -t "win-$$" destroy-unattached on
+else
+  exec tmux new-session -A -s main
+fi''']
 
 [window]
 opacity = 0.97
